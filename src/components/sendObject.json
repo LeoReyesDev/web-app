@@ -1,0 +1,19 @@
+{
+    "implType" : "CollectEmail",
+    "id" : "0010212",
+    "title" : "Join the list ' receive 15% off your first order",
+    "description" : "Sign up for our newsletter",
+    "dataPostURL" : null,
+    "js" : null,
+    "formIntegration" : {
+        "implType" : "URLPostFormIntegtration",
+        "url" : "https://postman-echo.com/post",
+        "paramsMap":{
+            "EMAIL":"post_email",
+            "NAME":"post_name"
+        },
+        "type":"URL_POST"
+    },
+    "integration" : "COLLECT_EMAIL"
+
+}
