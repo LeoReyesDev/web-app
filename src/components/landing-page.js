@@ -1,77 +1,113 @@
 import "../css/styles.css";
 import "../css/custom.css";
 import VideoBg from "../assets/mp4/bg.mp4";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
-function LandingPage() {
+const ModalWindow = (props) => {
+  return (
+    <div id="lightBox">
+      <div>
+        <h1>{props.username}</h1>
+        <h5>{props.title}</h5>
+        <button onClick={props.close} className="btn btn-danger">
+          Close X
+        </button>
+      </div>
+    </div>
+  );
+};
+
+const LandingPage = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [modal, setModal] = useState(false);
+  const [disableBtn, setDisableBtn] = useState(true);
 
-  const sendJsonObject = [
-    {
-      implType: "CollectEmail",
-      id: "0010212",
-      title: "Join the list ' receive 15% off your first order",
-      description: "Sign up for our newsletter",
-      dataPostURL: null,
-      js: null,
-      formIntegration: {
-        implType: "URLPostFormIntegtration",
-        url: "https://postman-echo.com/post",
-        paramsMap: {
-          EMAIL: email,
-          NAME: name,
-        },
-        type: "URL_POST",
+  const getResponse = {
+    implType: "CollectEmail",
+    id: "Q5O3U9H3KRs6M54X",
+    thumbnail: "KEAn38tFEPd4xkyC/dbc2c7971fd6b78d.png",
+    title: "Join the list & receive 15% off your first order",
+    description: "Sign up for our newsletter",
+    dataPostURL: null,
+    js: null,
+    formIntegration: {
+      implType: "URLPostFormIntegration",
+      url: "https://postman-echo.com/post",
+      paramsMap: {
+        EMAIL: email,
+        NAME: name,
       },
-      integration: "COLLECT_EMAIL",
+      type: "URL_POST",
     },
-  ];
+    integration: "COLLECT_EMAIL",
+  };
 
-  const getDataFromApi = () => {
-    console.log("POST DATA OBJECT", sendJsonObject);
-    const requestOptions = {
-      headers: { "Content-type": "application/json; charset=UTF-8" },
-      method: "POST", // *GET, POST, PUT, DELETE, etc.
-      mode: "no-cors", // no-cors, *cors, same-origin
-      cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-      credentials: "same-origin", // include, *same-origin, omit
-      redirect: "follow", // manual, *follow, error
-      referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-      body: JSON.stringify({ sendJsonObject }), // body data type must match "Content-Type" header
+  const closeWin = () => {
+    setModal(false);
+  };
+
+  const getDataApi = () => {
+    console.log("getApi");
+    axios.get("http://localhost:3001/api").then((response) => {
+      console.log("Get API INFO", response.data);
+    });
+  };
+
+  const submitData = () => {
+    //console.log(getResponse);
+
+    setDisableBtn(true);
+
+    const Url1 = "http://localhost:3001/signup";
+    const Url2 = "https://jsonplaceholder.typicode.com/posts";
+
+    //Note please read
+
+    /* NOTE PLEASE READ
+     I tried to run the app in local variables Url1 and getResponse, but on the browser
+     doesnt received 200 on signup processs, you can review on local run up server/index.js
+     could tracking response once time change and field form
+    */
+
+    let getResponse2 = {
+      userId: 12,
+      id: 12,
+      title:
+        "sunt aut facere repellat provident occaecati excepturi optio reprehenderit",
+      body: { name: name, email: email }, //checkout if objects send to post
     };
-    fetch(
-      "https://api.lightboxlive.com/v0/lb/ltXtK535b9DkPozH/page",
-      requestOptions
-    )
-      .then(async (response) => {
-        const isJson = response.headers
-          .get("content-type")
-          ?.includes("application/json");
-        const data = isJson && (await response.json());
 
-        // check for error response
-        if (!response.ok) {
-          // get error message from body or default to response status
-          const error = (data && data.message) || response.status;
-          return Promise.reject(error);
-          alert("Join the list ' receive 15% off your first order");
-        }
-      })
+    axios
+      .post(Url1, getResponse) // you can change for this -> .post(Url12 getResponse2)
+      .then((response) => console.log("data:", response.data))
+      .then(setModal(true), console.log("window"))
       .catch((error) => {
-        //this.setState({ errorMessage: error.toString() });
         console.error("There was an error!", error);
       });
-  }; //Get Email
+  };
 
   const inputEmail = (e) => {
     setEmail(e.target.value);
-    console.log("email: ", email);
+    enabledBtn();
   };
 
   const inputName = (e) => {
     setName(e.target.value);
-    console.log("email: ", name);
+    enabledBtn();
+  };
+
+  useEffect(() => {
+    getDataApi();
+  }, []);
+
+  const message = "Join the list & receive 15% off your first order";
+
+  const enabledBtn = () => {
+    if (email !== null && name !== null) {
+      setDisableBtn(false);
+    }
   };
 
   return (
@@ -88,62 +124,65 @@ function LandingPage() {
 
       <div className="container wrap">
         <div className="row">
+          {modal ? (
+            <ModalWindow close={closeWin} title={message} username={name} />
+          ) : null}
           <div className="col-md-6">
             <h2> Corsair Real Estate</h2>
             <p>
               See the power of extra principal payments or refinancing at the
               right time.
             </p>
-            <form>
-              <div className="form-group">
-                <input
-                  type="text"
-                  className="form-control"
-                  id="name"
-                  aria-describedby="name"
-                  placeholder="Enter your name"
-                  value={name}
-                  onChange={inputName}
-                  required
-                />
 
-                <br />
-              </div>
+            <div className="form-group">
+              <input
+                type="text"
+                className="form-control"
+                id="name"
+                aria-describedby="name"
+                placeholder="Enter your name"
+                value={name}
+                onChange={inputName}
+                required
+              />
 
-              <div className="form-group">
-                <input
-                  type="email"
-                  className="form-control"
-                  id="exampleInputEmail1"
-                  aria-describedby="emailHelp"
-                  placeholder="Enter email"
-                  value={email}
-                  onChange={inputEmail}
-                  required
-                />
+              <br />
+            </div>
 
-                <small id="emailHelp" className="form-text textMute">
-                  We'll never share your email with anyone else.
-                </small>
-              </div>
+            <div className="form-group">
+              <input
+                type="email"
+                className="form-control"
+                id="exampleInputEmail1"
+                aria-describedby="emailHelp"
+                placeholder="Enter email"
+                value={email}
+                onChange={inputEmail}
+                required
+              />
 
-              <button
-                onClick={getDataFromApi}
-                className="btn btn-primary fullwidthbtn"
-                type="submit"
-              >
-                Submit
-              </button>
+              <small id="emailHelp" className="form-text textMute">
+                We'll never share your email with anyone else.
+              </small>
+            </div>
 
-              <p className="disclaimer">
-                By submitting this form, you agree to receive recurring
-                automated promotional and personalized marketing text messages
-                (e.g. cart reminders) from Skechers at the cell number used when
-                signing up. Consent is not a condition of any purchase. Reply
-                HELP for help and STOP to cancel. Msg frequency varies. Msg and
-                data rates may apply. View Terms & Privacy.
-              </p>
-            </form>
+            <button
+              onClick={submitData}
+              className="btn btn-primary fullwidthbtn"
+              type="submit"
+              disabled={disableBtn}
+            >
+              Submit
+            </button>
+
+            <p className="disclaimer">
+              By submitting this form, you agree to receive recurring automated
+              promotional and personalized marketing text messages (e.g. cart
+              reminders) from Skechers at the cell number used when signing up.
+              Consent is not a condition of any purchase. Reply HELP for help
+              and STOP to cancel. Msg frequency varies. Msg and data rates may
+              apply. View Terms & Privacy.
+            </p>
           </div>
           <div className="col-md-6">
             <img
@@ -156,6 +195,6 @@ function LandingPage() {
       </div>
     </div>
   );
-}
+};
 
 export default LandingPage;

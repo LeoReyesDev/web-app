@@ -1,19 +1,78 @@
 {
-    "implType" : "CollectEmail",
-    "id" : "0010212",
-    "title" : "Join the list ' receive 15% off your first order",
-    "description" : "Sign up for our newsletter",
-    "dataPostURL" : null,
-    "js" : null,
-    "formIntegration" : {
-        "implType" : "URLPostFormIntegtration",
-        "url" : "https://postman-echo.com/post",
-        "paramsMap":{
-            "EMAIL":"post_email",
-            "NAME":"post_name"
+    "implType": "PageSequenceResponse",
+    "id": "bWHC3dpvAJVQRdEp",
+    "lastUpdate": "2021-08-17 22:42:38 PDT",
+    "lbName": "Billabong",
+    "title": "Billabong",
+    "description": "The Billabong Experience",
+    "bannerImage": "KEAn38tFEPd4xkyC/2b3589d26cb92372.png",
+    "thumbnail": "KEAn38tFEPd4xkyC/2b3589d26cb92372.png",
+    "actions": [
+        {
+            "implType": "ScanCode",
+            "id": "mu4nEnuhbs6RKAo1",
+            "thumbnail": "KEAn38tFEPd4xkyC/0388f672551b5bb8.png",
+            "title": "Scan any barcode on a Product",
+            "description": "Get access to product images, information, sizes and buy with Free Shipping",
+            "dataPostURL": null,
+            "js": null,
+            "integration": "SCAN_QR_BARCODE"
         },
-        "type":"URL_POST"
+        {
+            "implType": "CollectEmail",
+            "id": "Q5O3U9H3KRs6M54X",
+            "thumbnail": "KEAn38tFEPd4xkyC/dbc2c7971fd6b78d.png",
+            "title": "Join the list & receive 15% off your first order",
+            "description": "Sign up for our newsletter",
+            "dataPostURL": null,
+            "js": null,
+            "formIntegration": {
+                "implType": "URLPostFormIntegration",
+                "url": "https://postman-echo.com/post",
+                "paramsMap": {
+                    "EMAIL": "post_email",
+                    "NAME": "post_name"
+                },
+                "type": "URL_POST"
+            },
+            "integration": "COLLECT_EMAIL"
+        },
+        {
+            "implType": "PageLink",
+            "id": "Ct1l3vYXyfLCKX3z",
+            "thumbnail": "KEAn38tFEPd4xkyC/7b3f3c5f06dcb961.png",
+            "title": "Online Exclusive",
+            "description": "https://www.billabong.com/men-collections-only-online/",
+            "dataPostURL": null,
+            "js": null,
+            "nativeLink": false,
+            "integration": "PAGE_LINK"
+        },
+        {
+            "implType": "PageLink",
+            "id": "7Oco1kQaSPJAX83Q",
+            "thumbnail": "KEAn38tFEPd4xkyC/9203a268a898e7de.jpeg",
+            "title": "Customize your Board Shorts",
+            "description": "https://www.billabong.com/custom-fifty5o-pro-ABYBS00280.html",
+            "dataPostURL": null,
+            "js": null,
+            "nativeLink": false,
+            "integration": "PAGE_LINK"
+        },
+        {
+            "implType": "PageLink",
+            "id": "sZyZwNpBmxyswgIn",
+            "thumbnail": "KEAn38tFEPd4xkyC/4f7ecf58fb47454f.png",
+            "title": "Billabong Crew",
+            "description": "https://www.billabong.com/billabong-crew/#registration",
+            "dataPostURL": null,
+            "js": null,
+            "nativeLink": false,
+            "integration": "PAGE_LINK"
+        }
+    ],
+    "meta": {
+        "ECOM_STORE": "https://lightboxlive-test.myshopify.com"
     },
-    "integration" : "COLLECT_EMAIL"
-
+    "type": "PAGE"
 }
